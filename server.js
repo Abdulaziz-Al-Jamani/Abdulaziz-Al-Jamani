@@ -9,7 +9,10 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://sutwwa-11e6f.web.app",
+    origin: [
+      "http://localhost:5173", // أثناء التطوير
+      "https://sutwwa-11e6f.web.app", // موقعك على Firebase
+    ],
     credentials: true,
   })
 );
