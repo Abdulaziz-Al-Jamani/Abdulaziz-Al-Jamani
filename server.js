@@ -9,7 +9,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://sutwwa-11e6f.web.app",
     credentials: true,
   })
 );
