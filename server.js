@@ -14,7 +14,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
+app.options("*", cors());
 // مثال endpoint لإنشاء طلب بايبال
 app.post("/api/paypal/create-order", async (req, res) => {
   try {
