@@ -9,10 +9,9 @@ app.use(express.json());
 // حل مشكلة CORS
 app.use(
   cors({
-    origin: "https://sutwwa-11e6f.web.app", // ضع هنا رابط موقعك
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    origin: "https://sutwwa-11e6f.web.app", // رابط موقعك على Firebase
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // لو تستخدم الكوكيز
   })
 );
 
