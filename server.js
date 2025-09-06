@@ -38,8 +38,8 @@ app.post("/api/paypal/create-order", async (req, res) => {
         },
       ],
       application_context: {
-    shipping_preference: "NO_SHIPPING" // يمنع طلب عنوان الشحن
-  },
+        shipping_preference: "NO_SHIPPING", // يمنع طلب عنوان الشحن
+      },
     };
 
     const orderId = await createPaypalOrder(order);
@@ -47,6 +47,22 @@ app.post("/api/paypal/create-order", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "حدث خطأ عند إنشاء الطلب" });
+  }
+});
+
+// Endpoint لتنفيذ الدفع بعد الموافقة
+app.post("/api/paypal/capture-order", async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    const request = new checkoutNodeJssdk.orders.OrdersCaptureRequest(orderId);
+    request.requestBody({});
+
+    const capture = await paypalClient.execute(request);
+    res.json({ status: "success", details: capture.result });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "حدث خطأ عند تنفيذ الدفع" });
   }
 });
 
