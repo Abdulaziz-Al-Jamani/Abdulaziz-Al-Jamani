@@ -2,9 +2,20 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const paypalClient = require("./paypalClient");
+const checkoutNodeJssdk = require("@paypal/checkout-server-sdk");
 
 // تفعيل body parsing للـ JSON
 app.use(express.json());
+
+async function createPaypalOrder(orderData) {
+  const request = new checkoutNodeJssdk.orders.OrdersCreateRequest();
+  request.prefer("return=representation"); // يرجع تفاصيل الطلب
+  request.requestBody(orderData);
+
+  const response = await paypalClient.execute(request);
+  return response.result.id; // هذا هو orderId
+}
 
 // حل مشكلة CORS
 app.use(
@@ -18,24 +29,19 @@ app.options("*", cors());
 // مثال endpoint لإنشاء طلب بايبال
 app.post("/api/paypal/create-order", async (req, res) => {
   try {
-    // هنا ضع كود إنشاء الطلب باستخدام SDK بايبال
-    // مثال:
     const order = {
       intent: "CAPTURE",
       purchase_units: [
         {
           amount: {
             currency_code: "USD",
-            value: "10.00",
+            value: "10.00", // أو اجعلها ديناميكية من req.body
           },
         },
       ],
     };
 
-    // افترض أن لديك كود بايبال هنا لإرجاع orderId
-    // const orderId = await createPaypalOrder(order);
-    const orderId = await createPaypalOrder(order); // مؤقت للتجربة
-
+    const orderId = await createPaypalOrder(order);
     res.json({ id: orderId });
   } catch (err) {
     console.error(err);
