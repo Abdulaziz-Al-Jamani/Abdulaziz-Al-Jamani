@@ -34,7 +34,7 @@ app.post("/api/paypal/create-order", async (req, res) => {
 
     // افترض أن لديك كود بايبال هنا لإرجاع orderId
     // const orderId = await createPaypalOrder(order);
-    const orderId = "FAKE_ORDER_ID"; // مؤقت للتجربة
+    const orderId = await createPaypalOrder(order); // مؤقت للتجربة
 
     res.json({ id: orderId });
   } catch (err) {
