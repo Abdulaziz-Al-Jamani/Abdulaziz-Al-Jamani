@@ -26,7 +26,7 @@ async function createPaypalOrder(orderData) {
 // Endpoint لإنشاء طلب
 app.post("/api/paypal/create-order", async (req, res) => {
   try {
-    const { amount = "10.00" } = req.body; // اجعل المبلغ ديناميكي من frontend
+    const { amount = "1.00" } = req.body; // اجعل المبلغ ديناميكي من frontend
     const order = {
       intent: "CAPTURE",
       purchase_units: [
@@ -37,6 +37,9 @@ app.post("/api/paypal/create-order", async (req, res) => {
           },
         },
       ],
+      application_context: {
+    shipping_preference: "NO_SHIPPING" // يمنع طلب عنوان الشحن
+  },
     };
 
     const orderId = await createPaypalOrder(order);
